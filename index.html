@@ -1926,7 +1926,7 @@ async function doRegister(){
 // Google Login
 async function doGoogleLogin(){
   try {
-    await signInWithPopup(auth, googleProvider);
+    await signInWithRedirect(auth, googleProvider);
   } catch(e) {
     const err = document.getElementById('loginError');
     if(e.code !== 'auth/popup-closed-by-user'){
@@ -1939,7 +1939,7 @@ async function doGoogleLogin(){
 // GitHub Login
 async function doGithubLogin(){
   try {
-    await signInWithPopup(auth, githubProvider);
+    await signInWithRedirect(auth, githubProvider);
   } catch(e) {
     const err = document.getElementById('loginError');
     if(e.code !== 'auth/popup-closed-by-user'){
