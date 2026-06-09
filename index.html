@@ -1585,7 +1585,6 @@ if(planetResp.ok) {
   const pText = parsed.content.map(c => c.text || '').join('');
   const pClean = pText.replace(/```json|```/g, '').trim();
   const planets = JSON.parse(pClean);
-  
   let planetsHTML = '<div class="planets-grid">';
   planets.planets.forEach(p => {
     planetsHTML += `
