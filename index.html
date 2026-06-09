@@ -1587,20 +1587,13 @@ if(planetResp.ok) {
   const planets = JSON.parse(pClean);
  
   let planetsHTML = '<div class="planets-grid">';
-  (planets.planets || planets).forEach(p => {
-    planetsHTML += `
-      <div class="planet-row">
-        <div class="planet-sym">${p.symbol}</div>
-        <div class="planet-info">
-          <div class="planet-name">${p.name}</div>
-          <div class="planet-rashi">${p.rashi}</div>
-        </div>
-        <div class="planet-deg">${p.degree}</div>
-      </div>`;
-  });
-  planetsHTML += '</div>';
-  
-  document.getElementById('planetsData').innerHTML = planetsHTML;
+const pList = Array.isArray(planets.planets) ? planets.planets : Array.isArray(planets) ? planets : [];
+let planetsHTML = '<div class="planets-grid">';
+pList.forEach(p => {
+  planetsHTML += `<div class="planet-row"><div class="planet-sym">${p.symbol}</div><div class="planet-info"><div class="planet-name">${p.name}</div><div class="planet-rashi">${p.rashi}</div></div><div class="planet-deg">${p.degree}</div></div>`;
+});
+planetsHTML += '</div>';
+document.getElementById('planetsData').innerHTML = planetsHTML;
   
   // Data save karo future tabs ke liye
   window.lastKundaliData = {name, dob, tob, pob};
@@ -2059,8 +2052,9 @@ window.switchAuthTab = switchAuthTab;
 window.showForgot = showForgot;
 window.doLogin = doLogin;
 window.doRegister = doRegister;
-window.doGoogleLogin = doGoogleLogin;
  window.doGoogleLogin = doGoogleLogin;
+ window.doGoogleLogin = doGoogleLogin;
+window.doGithubLogin = doGithubLogin;
 window.doGithubLogin = doGithubLogin;
 window.doGithubLogin = doGithubLogin;
 window.doForgot = doForgot;
