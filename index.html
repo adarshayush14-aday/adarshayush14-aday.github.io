@@ -1570,6 +1570,10 @@ async function generateKundali(){
       });
       planetsHTML+='</div>';
       document.getElementById('planetsData').innerHTML=planetsHTML;
+      window.lastKundaliData={name,dob,tob,pob};
+    }
+  }catch(e){console.log('Planets error:',e);}
+}
       window.lastKundaliData = {name, dob, tob, pob};
   }catch(e){
     console.log('Planets load error:', e);
