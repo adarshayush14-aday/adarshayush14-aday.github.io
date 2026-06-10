@@ -1494,7 +1494,24 @@ overscroll-behavior: none;
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, GithubAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-// Stars
+
+// ===== REAL FIREBASE AUTH =====
+const firebaseConfig = {
+  apiKey: "AIzaSyA1h3qaBH8Rtl874xuWZMvp6DfAKHpaMYs",
+  authDomain: "grahika-astro.firebaseapp.com",
+  projectId: "grahika-astro",
+  storageBucket: "grahika-astro.firebasestorage.app",
+  messagingSenderId: "574643833340",
+  appId: "1:574643833340:web:4f778605f8d78747a2ca79"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+  const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider(); 
+ 
+ // Stars
 const sc = document.getElementById('starsContainer');
 for(let i=0;i<80;i++){
   const s=document.createElement('div');
@@ -1823,22 +1840,6 @@ function selectPM(el){
   }
   }
 
-// ===== REAL FIREBASE AUTH =====
-const firebaseConfig = {
-  apiKey: "AIzaSyA1h3qaBH8Rtl874xuWZMvp6DfAKHpaMYs",
-  authDomain: "grahika-astro.firebaseapp.com",
-  projectId: "grahika-astro",
-  storageBucket: "grahika-astro.firebasestorage.app",
-  messagingSenderId: "574643833340",
-  appId: "1:574643833340:web:4f778605f8d78747a2ca79"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-  const db = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
-const githubProvider = new GithubAuthProvider();
-
 // Mobile redirect result handle karo
 getRedirectResult(auth).then((result) => {
   if (result && result.user) {
@@ -1940,6 +1941,7 @@ async function doLogin(){
   const err=document.getElementById('loginError');
   clearErrors();
   if(!email||!pass){ err.textContent='📧 Email aur password dono zaroori hain!'; err.classList.add('show'); return; }
+  if(!auth){ err.textContent='⚠️ App load ho rahi hai, thodi der baad try karein.'; err.classList.add('show'); return; }
   try {
     const btn = document.querySelector('#loginForm .auth-btn-main');
     btn.textContent = '⏳ Login ho raha hai...'; btn.disabled = true;
@@ -1958,7 +1960,6 @@ async function doLogin(){
     err.classList.add('show');
   }
 }
-
 // Email Register
 async function doRegister(){
   const name=document.getElementById('regName').value.trim();
@@ -1969,6 +1970,7 @@ async function doRegister(){
   const suc=document.getElementById('registerSuccess');
   clearErrors();
   if(!name||!email||!pass||!confirm){ err.textContent='⚠️ Sabhi fields bharna zaroori hai!'; err.classList.add('show'); return; }
+  if(!auth){ err.textContent='⚠️ App load ho rahi hai, thodi der baad try karein.'; err.classList.add('show'); return; }
   if(pass.length<6){ err.textContent='🔒 Password kam se kam 6 characters ka hona chahiye!'; err.classList.add('show'); return; }
   if(pass!==confirm){ err.textContent='❌ Dono passwords match nahi kar rahe!'; err.classList.add('show'); return; }
   try {
