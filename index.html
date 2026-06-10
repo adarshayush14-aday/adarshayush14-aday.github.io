@@ -1839,8 +1839,19 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
-// Auth state observer
-onAuthStateChanged(auth, (user) => {
+// Mobile redirect result handle karo
+getRedirectResult(auth).then((result) => {
+  if (result && result.user) {
+    hideAuthOverlay();
+    updateNavUser(result.user);
+    loadUserPlan(result.user.uid);
+  }
+}).catch((e) => {
+  console.log('Redirect error:', e);
+});
+
+ // Auth state observer
+ onAuthStateChanged(auth, (user) => {
   if (user) {
     hideAuthOverlay();
     updateNavUser(user);
@@ -2070,22 +2081,32 @@ window.doLogin = doLogin;
 window.doRegister = doRegister;
  window.doGoogleLogin = async function(){
   try {
-    await signInWithPopup(auth, googleProvider);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if(isMobile) {
+      await signInWithRedirect(auth, googleProvider);
+    } else {
+      await signInWithPopup(auth, googleProvider);
+    }
   } catch(e) {
     const err = document.getElementById('loginError');
     if(e.code !== 'auth/popup-closed-by-user'){
-      err.textContent = '❌ Google login fail hua!';
+      err.textContent = '❌ Google login fail hua! Dobara try karein.';
       err.classList.add('show');
     }
   }
 };
 window.doGithubLogin = async function(){
   try {
-    await signInWithPopup(auth, githubProvider);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if(isMobile) {
+      await signInWithRedirect(auth, githubProvider);
+    } else {
+      await signInWithPopup(auth, githubProvider);
+    }
   } catch(e) {
     const err = document.getElementById('loginError');
     if(e.code !== 'auth/popup-closed-by-user'){
-      err.textContent = '❌ GitHub login fail hua!';
+      err.textContent = '❌ GitHub login fail hua! Dobara try karein.';
       err.classList.add('show');
     }
   }
