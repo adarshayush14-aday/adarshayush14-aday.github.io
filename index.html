@@ -2060,8 +2060,28 @@ window.switchAuthTab = switchAuthTab;
 window.showForgot = showForgot;
 window.doLogin = doLogin;
 window.doRegister = doRegister;
- window.doGoogleLogin = doGoogleLogin;
-window.doGithubLogin = doGithubLogin;
+ window.doGoogleLogin = async function(){
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch(e) {
+    const err = document.getElementById('loginError');
+    if(e.code !== 'auth/popup-closed-by-user'){
+      err.textContent = '❌ Google login fail hua!';
+      err.classList.add('show');
+    }
+  }
+};
+window.doGithubLogin = async function(){
+  try {
+    await signInWithPopup(auth, githubProvider);
+  } catch(e) {
+    const err = document.getElementById('loginError');
+    if(e.code !== 'auth/popup-closed-by-user'){
+      err.textContent = '❌ GitHub login fail hua!';
+      err.classList.add('show');
+    }
+  }
+};
 window.doForgot = doForgot;
 window.doLogout = doLogout;
 window.toggleProfileDropdown = toggleProfileDropdown;
