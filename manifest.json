@@ -1,9 +1,9 @@
 {
   "name": "Grahika Astro",
   "short_name": "Grahika",
-  "description": "AI powered Vedic astrology app - Kundali, Horoscope, Rashifal",
-  "start_url": "/grahika-astro/",
-  "scope": "/grahika-astro/",
+  "description": "Vedic Astrology app - Kundali, Horoscope, Rashifal",
+  "start_url": "/",
+  "scope": "/",
   "id": "com.grahikaastro.app",
   "display": "standalone",
   "orientation": "portrait",
