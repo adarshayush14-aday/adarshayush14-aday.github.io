@@ -1,8 +1,8 @@
  <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" style="touch-action:pan-x pan-y;overflow:hidden;">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 <title>Grahika Astro</title>
  <meta name="description" content="Grahika Astro - Vedic Jyotish App. Janam Kundali, Daily Rashifal, Kundali Milan, Panchang aur bahut kuch.">
 <meta name="keywords" content="kundali, rashifal, astrology, jyotish, panchang, kundali milan, vedic astrology">
@@ -43,6 +43,9 @@ body {
   overflow-x: hidden;
  -webkit-overflow-scrolling: touch;
 overscroll-behavior: none;
+ touch-action: pan-x pan-y;
+-ms-touch-action: pan-x pan-y;
+zoom: reset;
 }
   
 .star {
