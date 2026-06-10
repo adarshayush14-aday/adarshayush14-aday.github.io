@@ -1545,15 +1545,6 @@ function showKTab(tab){
     if(el)el.style.display=t===tab?'block':'none';
   });
 }
-  if(tab==='planets'&&window.lastKundaliData){
-    loadKundaliTab(tab,window.lastKundaliData);
-    return;
-  }
-  ['planets','dasha','numerology','tarot','gems'].forEach(t=>{
-    const el=document.getElementById('ktab-'+t);
-    if(el)el.style.display=t===tab?'block':'none';
-  });
-}
 
 // Generate Kundali
 async function generateKundali(){
