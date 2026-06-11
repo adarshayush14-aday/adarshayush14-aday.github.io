@@ -1626,16 +1626,6 @@ async function generateKundali(){
   }catch(e){console.log('Planets error:',e);}
 }
 
- function reduceToSingleDigit(n) {
-  while (n > 9 && n !== 11 && n !== 22) {
-    n = String(n).split('').reduce((a, b) => a + parseInt(b), 0);
-  }
-  return n;
-  var dobVal = document.getElementById('birthDate') ? document.getElementById('birthDate').value : '';
-  var nameVal = document.getElementById('birthName') ? document.getElementById('birthName').value : '';
-  if (dobVal) calculateNumerology(dobVal, nameVal);
-}
-
  function reduceNum(n) {
   while (n > 9 && n !== 11 && n !== 22) {
     n = String(n).split('').reduce(function(a,b){ return a + parseInt(b); }, 0);
@@ -1660,37 +1650,6 @@ function calculateNumerology(dob, name) {
   var labels = [moolank, bhagyank, naamAnk];
   for (var i = 0; i < numVals.length && i < labels.length; i++) {
     numVals[i].textContent = labels[i];
-  }
-}
-  
-  // Bhagyank = poori DOB ka sum
-  const dobDigits = dob.replace(/-/g, '').split('').reduce((a, b) => a + parseInt(b), 0);
-  const bhagyank = reduceToSingleDigit(dobDigits);
-  
-  // Naam Ank = name ke letters ka sum (A=1, B=2...)
-  const nameVal = (name || '').toUpperCase().replace(/[^A-Z]/g, '')
-    .split('').reduce((a, c) => a + (c.charCodeAt(0) - 64), 0);
-  const naamAnk = reduceToSingleDigit(nameVal);
-  
-  // DOM update
-  const bigNum = document.querySelector('.big-num');
-  if (bigNum) bigNum.textContent = moolank;
-  
-  const numVals = document.querySelectorAll('.num-val');
-  const numTypes = document.querySelectorAll('.num-type');
-  const data = [
-    [moolank, 'Moolank'],
-    [bhagyank, 'Bhagyank'],
-    [naamAnk, 'Naam Ank']
-  ];
-  numVals.forEach((el, i) => { if (data[i]) el.textContent = data[i][0]; });
- function doGoogleLogin() {
-  showToast('Google Login jald aa raha hai! Abhi Email se login karein. 🙏');
-}
-
-function doGithubLogin() {
-  showToast('GitHub Login jald aa raha hai! Abhi Email se login karein. 🙏');
-}
 // AI Chat
 const rashifalData={};
 async function showRashifal(el,rashi){
@@ -2033,14 +1992,6 @@ async function doLogin(){
     err.textContent = msgs[e.code] || '❌ Login fail hua: ' + e.message;
     err.classList.add('show');
   }
-}
-
-function doGoogleLogin() {
-  showToast('Google Login jald aa raha hai! Abhi Email se login karein. 🙏');
-}
-
-function doGithubLogin() {
-  showToast('GitHub Login jald aa raha hai! Abhi Email se login karein. 🙏');
 }
  
 // Email Register
