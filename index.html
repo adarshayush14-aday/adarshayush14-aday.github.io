@@ -1532,7 +1532,7 @@ if (proPages.includes(name) && plan === 'free') {
 document.querySelectorAll('.bottom-nav-btn').forEach(function(btn) {
   btn.classList.remove('active');
 });
-var activeBtn = document.querySelector('.bottom-nav-btn[onclick*="' + page + '"]');
+var activeBtn = document.querySelector('.bottom-nav-btn[onclick*="' + name + '"]');
 if (activeBtn) activeBtn.classList.add('active');
 }
 
