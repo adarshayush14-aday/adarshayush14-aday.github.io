@@ -813,7 +813,7 @@ for(let i=0;i<80;i++){
 // Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyA1h3qaBH8Rtl874xuWZMvp6DfAKHpaMYs",
-  authDomain: "grahikaastro.online",
+  authDomain: "grahika-astro.firebaseapp.com",
   projectId: "grahika-astro",
   storageBucket: "grahika-astro.firebasestorage.app",
   messagingSenderId: "574643833340",
@@ -1050,16 +1050,8 @@ async function doLogout(){
   document.getElementById('navLoginBtn').style.display='block';
   document.getElementById('navUserInfo').style.display='none';
   toggleProfileDropdown(true);
-  
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches
-                || window.navigator.standalone === true;
-  if(isPWA) {
-    setTimeout(() => {
-      window.open('https://grahikaastro.online?login=1', '_blank');
-    }, 500);
-  }
+  authReady = true;
 }
-
 function toggleProfileDropdown(forceClose = false) {
   const dd = document.getElementById('profileDropdown');
   if (forceClose) { dd.classList.remove('open'); return; }
@@ -1079,58 +1071,30 @@ document.addEventListener('click', (e) => {
 // =============================================
 
 window.doGoogleLogin = async function() {
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches
-                || window.navigator.standalone === true;
-
-  if (isPWA) {
-    // PWA mein redirect kaam nahi karta reliably
-    // Browser session se sync karo
-    const err = document.getElementById('loginError');
-    err.innerHTML = `
-      <div style="line-height:1.8;">
-        📱 <strong>App mein Google login:</strong><br>
-        1. Phone mein <strong>Chrome browser</strong> kholo<br>
-        2. <strong>grahikaastro.online</strong> kholo<br>
-        3. Wahan <strong>Google se login</strong> karo<br>
-        4. Wapas <strong>app kholo</strong> — automatic logged in! ✨
-        <br><br>
-        <strong style="color:#FFD700;">Ya Email/Password se login karein 👇</strong>
-      </div>`;
-    err.classList.add('show');
-    return;
-  }
-
   try {
     await signInWithPopup(auth, googleProvider);
   } catch(e) {
     const err = document.getElementById('loginError');
-    if (e.code !== 'auth/popup-closed-by-user') {
+    if(e.code === 'auth/popup-blocked') {
+      err.textContent = '⚠️ Popup block hua! Browser mein popup allow karein.';
+      err.classList.add('show');
+    } else if(e.code !== 'auth/popup-closed-by-user') {
       err.textContent = '❌ Google login fail hua: ' + e.message;
       err.classList.add('show');
     }
   }
 };
-window.doGithubLogin = async function() {
-  const err = document.getElementById('loginError');
-  clearErrors();
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches
-                || window.navigator.standalone === true;
+  window.doGithubLogin = async function() {
   try {
-    if (isPWA) {
-      authReady = false;
-      await signInWithRedirect(auth, githubProvider);
-    } else {
-      await signInWithPopup(auth, githubProvider);
-    }
+    await signInWithPopup(auth, githubProvider);
   } catch(e) {
-    authReady = true;
-    if (e.code !== 'auth/popup-closed-by-user') {
+    const err = document.getElementById('loginError');
+    if(e.code !== 'auth/popup-closed-by-user') {
       err.textContent = '❌ GitHub login fail hua: ' + e.message;
       err.classList.add('show');
     }
   }
 };
-
 // =============================================
 // PAGE NAVIGATION
 // =============================================
