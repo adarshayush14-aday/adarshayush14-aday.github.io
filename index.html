@@ -2126,19 +2126,22 @@ window.doLogin = doLogin;
 window.doRegister = doRegister;
 window.doGoogleLogin = async function(){
   try {
-    await signInWithPopup(auth, googleProvider);
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches 
+                  || window.navigator.standalone === true;
+    if(isPWA) {
+      await signInWithRedirect(auth, googleProvider);
+    } else {
+      await signInWithPopup(auth, googleProvider);
+    }
   } catch(e) {
     const err = document.getElementById('loginError');
-    if(e.code === 'auth/popup-blocked' || e.code === 'auth/cancelled-popup-request') {
-      err.textContent = '⚠️ Popup block hua! Browser mein popup allow karein ya Email se login karein.';
-      err.classList.add('show');
-    } else if(e.code !== 'auth/popup-closed-by-user'){
+    if(e.code !== 'auth/popup-closed-by-user'){
       err.textContent = '❌ Google login fail hua: ' + e.message;
       err.classList.add('show');
     }
   }
 };
-window.doGithubLogin = async function(){
+ window.doGithubLogin = async function(){
   try {
     await signInWithPopup(auth, githubProvider);
   } catch(e) {
