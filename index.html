@@ -1887,13 +1887,16 @@ getRedirectResult(auth).then((result) => {
   }
 }).catch((e) => {
   console.log('Redirect error:', e.code, e.message);
+  const err = document.getElementById('loginError');
+  if(!err) return;
   if(e.code === 'auth/unauthorized-domain') {
-    const err = document.getElementById('loginError');
-    if(err) {
-      err.textContent = '❌ Domain authorized nahi hai. Firebase console mein domain add karein.';
-      err.classList.add('show');
-    }
+    err.textContent = '❌ Domain authorized nahi hai.';
+  } else if(e.code === 'auth/account-exists-with-different-credential') {
+    err.textContent = '❌ Ye email already Email/Password se registered hai! Wahi se login karein.';
+  } else if(e.code) {
+    err.textContent = '❌ Login fail: ' + e.code;
   }
+  if(e.code) err.classList.add('show');
 });
 
  // Auth state observer
