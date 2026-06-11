@@ -35,6 +35,10 @@
   --red: #EF4444;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+ input, textarea, .msg-bubble, .chat-messages, .ai-msg {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
 body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #0f0025 0%, #1a0040 30%, #0d001a 60%, #1a0533 100%);
@@ -1058,7 +1062,7 @@ overscroll-behavior: none;
   <div class="panchang-grid" style="margin-bottom:25px;" id="panchangGrid">
   <div class="panchang-item">
     <div class="p-label">Tithi</div>
-    <div class="p-value">⏳ Load ho raha hai...</div>
+    <div id="panchangTithi" class="p-value">⏳ Load ho raha hai...</div>
     <div class="p-sub">Aaj ka Panchang</div>
   </div>
 </div>
@@ -1447,7 +1451,7 @@ overscroll-behavior: none;
 <div class="modal-overlay" id="payModal">
   <div class="modal">
     <div class="modal-title">💳 Payment</div>
-    <div class="modal-sub" id="payPlanLabel">Pro Plan — ₹299/maah</div>
+    <div class="modal-sub" id="payPlanLabel">Pro Plan — ₹99/maah</div>
     <div class="razorpay-badge">
       <span>🔒 Secured by</span>
       <span class="rz-logo" style="color:#00A650;">Cashfree</span>
@@ -1525,6 +1529,11 @@ if (proPages.includes(name) && plan === 'free') {
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
 });
+document.querySelectorAll('.bottom-nav-btn').forEach(function(btn) {
+  btn.classList.remove('active');
+});
+var activeBtn = document.querySelector('.bottom-nav-btn[onclick*="' + page + '"]');
+if (activeBtn) activeBtn.classList.add('active');
 }
 
 // Kundali tabs
@@ -1590,6 +1599,7 @@ async function generateKundali(){
     }
   }catch(e){
     document.querySelector('.kundali-chart').innerHTML=`<div style="text-align:center;padding:20px;color:#EF4444;">❌ Kundali load nahi hui. Dobara try karein.</div>`;
+   
   }
   try{
     const planetResp=await fetch('https://grahika-astro-api.adarsh-ayush14.workers.dev',{
@@ -1614,6 +1624,71 @@ async function generateKundali(){
       window.lastKundaliData={name,dob,tob,pob};
     }
   }catch(e){console.log('Planets error:',e);}
+}
+
+ function reduceToSingleDigit(n) {
+  while (n > 9 && n !== 11 && n !== 22) {
+    n = String(n).split('').reduce((a, b) => a + parseInt(b), 0);
+  }
+  return n;
+  var dobVal = document.getElementById('birthDate') ? document.getElementById('birthDate').value : '';
+  var nameVal = document.getElementById('birthName') ? document.getElementById('birthName').value : '';
+  if (dobVal) calculateNumerology(dobVal, nameVal);
+}
+
+ function reduceNum(n) {
+  while (n > 9 && n !== 11 && n !== 22) {
+    n = String(n).split('').reduce(function(a,b){ return a + parseInt(b); }, 0);
+  }
+  return n;
+}
+
+function calculateNumerology(dob, name) {
+  var day = new Date(dob).getDate();
+  var moolank = reduceNum(day);
+
+  var dobSum = dob.replace(/-/g,'').split('').reduce(function(a,b){ return a + parseInt(b); }, 0);
+  var bhagyank = reduceNum(dobSum);
+
+  var nameSum = (name || '').toUpperCase().replace(/[^A-Z]/g,'').split('').reduce(function(a,c){ return a + (c.charCodeAt(0)-64); }, 0);
+  var naamAnk = reduceNum(nameSum);
+
+  var bigNum = document.querySelector('.big-num');
+  if (bigNum) bigNum.textContent = moolank;
+
+  var numVals = document.querySelectorAll('.num-val');
+  var labels = [moolank, bhagyank, naamAnk];
+  for (var i = 0; i < numVals.length && i < labels.length; i++) {
+    numVals[i].textContent = labels[i];
+  }
+}
+
+function calculateNumerology(dob, name) {
+  // Moolank = date of birth ka din
+  const day = new Date(dob).getDate();
+  const moolank = reduceToSingleDigit(day);
+  
+  // Bhagyank = poori DOB ka sum
+  const dobDigits = dob.replace(/-/g, '').split('').reduce((a, b) => a + parseInt(b), 0);
+  const bhagyank = reduceToSingleDigit(dobDigits);
+  
+  // Naam Ank = name ke letters ka sum (A=1, B=2...)
+  const nameVal = (name || '').toUpperCase().replace(/[^A-Z]/g, '')
+    .split('').reduce((a, c) => a + (c.charCodeAt(0) - 64), 0);
+  const naamAnk = reduceToSingleDigit(nameVal);
+  
+  // DOM update
+  const bigNum = document.querySelector('.big-num');
+  if (bigNum) bigNum.textContent = moolank;
+  
+  const numVals = document.querySelectorAll('.num-val');
+  const numTypes = document.querySelectorAll('.num-type');
+  const data = [
+    [moolank, 'Moolank'],
+    [bhagyank, 'Bhagyank'],
+    [naamAnk, 'Naam Ank']
+  ];
+  numVals.forEach((el, i) => { if (data[i]) el.textContent = data[i][0]; });
 }
 // AI Chat
 const rashifalData={};
