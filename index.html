@@ -2138,7 +2138,7 @@ window.doGoogleLogin = async function(){
   try {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if(isMobile) {
-      Fix: use signInWithPopup for all devices
+      await signInWithPopup(auth, googleProvider);
     } else {
       await signInWithPopup(auth, googleProvider);
     }
