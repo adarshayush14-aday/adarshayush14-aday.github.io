@@ -1662,11 +1662,6 @@ function calculateNumerology(dob, name) {
     numVals[i].textContent = labels[i];
   }
 }
-
-function calculateNumerology(dob, name) {
-  // Moolank = date of birth ka din
-  const day = new Date(dob).getDate();
-  const moolank = reduceToSingleDigit(day);
   
   // Bhagyank = poori DOB ka sum
   const dobDigits = dob.replace(/-/g, '').split('').reduce((a, b) => a + parseInt(b), 0);
@@ -2034,6 +2029,14 @@ async function doLogin(){
   }
 }
 
+function doGoogleLogin() {
+  showToast('Google Login jald aa raha hai! Abhi Email se login karein. 🙏');
+}
+
+function doGithubLogin() {
+  showToast('GitHub Login jald aa raha hai! Abhi Email se login karein. 🙏');
+}
+ 
 // Email Register
 async function doRegister(){
   const name=document.getElementById('regName').value.trim();
