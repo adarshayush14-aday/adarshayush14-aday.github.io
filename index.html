@@ -2125,27 +2125,15 @@ window.showForgot = showForgot;
 window.doLogin = doLogin;
 window.doRegister = doRegister;
 window.doGoogleLogin = async function(){
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches 
-                || window.navigator.standalone === true;
-  
-  if(isPWA) {
-    const err = document.getElementById('loginError');
-    err.textContent = '📱 App mein Google login ke liye pehle browser mein grahikaastro.online kholen aur login karein — phir app mein automatic logged in rahenge!';
-    err.classList.add('show');
-    return;
-  }
-  
   try {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if(isMobile) {
-      await signInWithPopup(auth, googleProvider);
-    } else {
-      await signInWithPopup(auth, googleProvider);
-    }
+    await signInWithPopup(auth, googleProvider);
   } catch(e) {
     const err = document.getElementById('loginError');
-    if(e.code !== 'auth/popup-closed-by-user'){
-      err.textContent = '❌ Google login fail hua! Email se login karein.';
+    if(e.code === 'auth/popup-blocked' || e.code === 'auth/cancelled-popup-request') {
+      err.textContent = '⚠️ Popup block hua! Browser mein popup allow karein ya Email se login karein.';
+      err.classList.add('show');
+    } else if(e.code !== 'auth/popup-closed-by-user'){
+      err.textContent = '❌ Google login fail hua: ' + e.message;
       err.classList.add('show');
     }
   }
