@@ -1649,9 +1649,10 @@ function calculateNumerology(dob, name) {
   var numVals = document.querySelectorAll('.num-val');
   var labels = [moolank, bhagyank, naamAnk];
   for (var i = 0; i < numVals.length && i < labels.length; i++) {
+    numVals[i].textContent = labels[i];
   }
 }
-    numVals[i].textContent = labels[i];
+
 // AI Chat
 const rashifalData={};
 async function showRashifal(el,rashi){
