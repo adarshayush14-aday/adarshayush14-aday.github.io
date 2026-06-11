@@ -1045,12 +1045,19 @@ async function doForgot() {
   }
 }
 
-async function doLogout() {
+async function doLogout(){
   await signOut(auth);
-  document.getElementById('navLoginBtn').style.display = 'block';
-  document.getElementById('navUserInfo').style.display = 'none';
+  document.getElementById('navLoginBtn').style.display='block';
+  document.getElementById('navUserInfo').style.display='none';
   toggleProfileDropdown(true);
-  authReady = true; // Logout ke baad immediately auth overlay show karo
+  
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches
+                || window.navigator.standalone === true;
+  if(isPWA) {
+    setTimeout(() => {
+      window.open('https://grahikaastro.online?login=1', '_blank');
+    }, 500);
+  }
 }
 
 function toggleProfileDropdown(forceClose = false) {
@@ -1472,6 +1479,9 @@ window.showAuthOverlay = showAuthOverlay;
 const dobEl = document.getElementById('dob');
 if (dobEl) dobEl.value = new Date().toISOString().split('T')[0];
 loadPanchang();
+  if(new URLSearchParams(window.location.search).get('login') === '1') {
+  setTimeout(() => showAuthOverlay(), 500);
+}
 handlePaymentReturn();
 setTimeout(() => { const firstRashi = document.querySelector('.rashi-card'); if (firstRashi) showRashifal(firstRashi, 'mesh'); }, 2000);
 
