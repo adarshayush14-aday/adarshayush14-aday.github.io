@@ -2140,12 +2140,7 @@ window.doGoogleLogin = async function(){
 };
 window.doGithubLogin = async function(){
   try {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if(isMobile) {
-      await signInWithRedirect(auth, githubProvider);
-    } else {
-      await signInWithPopup(auth, githubProvider);
-    }
+    await signInWithPopup(auth, githubProvider);
   } catch(e) {
     const err = document.getElementById('loginError');
     if(e.code !== 'auth/popup-closed-by-user'){
