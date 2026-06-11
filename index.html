@@ -1685,6 +1685,13 @@ function calculateNumerology(dob, name) {
   ];
   numVals.forEach((el, i) => { if (data[i]) el.textContent = data[i][0]; });
 }
+ function doGoogleLogin() {
+  showToast('Google Login jald aa raha hai! Abhi Email se login karein. 🙏');
+}
+
+function doGithubLogin() {
+  showToast('GitHub Login jald aa raha hai! Abhi Email se login karein. 🙏');
+}
 // AI Chat
 const rashifalData={};
 async function showRashifal(el,rashi){
